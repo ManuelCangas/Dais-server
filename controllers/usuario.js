@@ -131,7 +131,7 @@ export const logTienda = async (req, res) => {
         nickname: nickname,
         usuario_rol: 2,
       },
-      attributes: ["nickname", "password"], //Solo devuelve los atributos
+      attributes: ["id", "nickname", "password"], //Solo devuelve los atributos
     });
     if (!usuario) {
       return res
@@ -142,7 +142,22 @@ export const logTienda = async (req, res) => {
     if (!isValidatedPassword) {
       return res.status(401).json({ message: "Credencial usuario invalida" });
     }
-    res.json({ message: "Inicio de sesión exitoso" });
+    const token = JWT.sign(
+      { userId: usuario.id, nickname: usuario.nickname },
+      "your-secret-key", // Cambia por tu clave secreta
+      {
+        expiresIn: "1h", // Expiración del token
+      }
+    );
+    res.json({
+      message: "Inicio de sesión exitoso",
+      token,
+      usuario: {
+        id: usuario.id,
+        nickname: usuario.nickname,
+      },
+    });
+    console.log("ID del usuario de tienda:", usuario.id, "El token es:", token);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error en el servidor" });

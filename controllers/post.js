@@ -22,6 +22,23 @@ export const getPost = async (req, res) => {
     console.log({ error: error.message });
   }
 };
+// Get  Usuario Post
+export const getUserPosts = async (req, res) => {
+  try {
+    const usuario_id = req.user.userId; // Obtiene el ID del usuario desde req.user
+
+    const userPosts = await Post.findAll({
+      where: { usuario_id },
+    });
+
+    res.json(userPosts);
+  } catch (error) {
+    console.error("Error fetching user posts:", error.message);
+    res.status(500).json({
+      error: "Hubo un error al intentar obtener las publicaciones del usuario",
+    });
+  }
+};
 //Post & Image //Usuario o Admin
 export const postPost = async (req, res) => {
   try {
