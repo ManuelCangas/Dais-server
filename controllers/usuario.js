@@ -70,7 +70,7 @@ export const logUsuario = async (req, res) => {
     }
     const token = JWT.sign(
       { userId: usuario.id, nickname: usuario.nickname },
-      "your-secret-key",
+      "your-secret-key", //Clave secreta
       {
         expiresIn: "1h", // Expiración del token
       }
@@ -143,8 +143,8 @@ export const logTienda = async (req, res) => {
       return res.status(401).json({ message: "Credencial usuario invalida" });
     }
     const token = JWT.sign(
-      { userId: usuario.id, nickname: usuario.nickname },
-      "your-secret-key", // Cambia por tu clave secreta
+      { userId: usuario.id },
+      "your-secret-key", // Clave secreta
       {
         expiresIn: "1h", // Expiración del token
       }

@@ -12,7 +12,7 @@ export const getAllPost = async (req, res) => {
     console.log({ error: error.mesagge });
   }
 };
-//Get //Usuario o Admin
+//Get Admin
 export const getPost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -26,7 +26,7 @@ export const getPost = async (req, res) => {
 export const getUserPosts = async (req, res) => {
   try {
     const usuario_id = req.user.userId; // Obtiene el ID del usuario desde req.user
-
+    console.log("Usuario ID:", usuario_id);
     const userPosts = await Post.findAll({
       where: { usuario_id },
     });
