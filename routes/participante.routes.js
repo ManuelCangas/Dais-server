@@ -13,9 +13,9 @@ router.get("/", getAllParticipantes);
 
 router.get("/:id", getParticipante);
 
-router.get("/usuarios/:postId", getParticipantes);
+router.get("/usuarios/:postId", getParticipantes); //obtiene los participantes con el id del post
 
-router.get("/:postId/:usuarioId/codigoqr", getCodigoQR);
+router.get("/:postId/:usuarioId/codigoqr", getCodigoQR); //obtiene codigo QR
 
 router.post("/", postParticipante);
 
