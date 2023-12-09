@@ -3,8 +3,9 @@ import {
   deleteParticipante,
   getAllParticipantes,
   getParticipante,
-  patchParticipante,
   postParticipante,
+  getCodigoQR,
+  getParticipantes,
 } from "../controllers/participante.js";
 const router = express.Router();
 
@@ -12,9 +13,11 @@ router.get("/", getAllParticipantes);
 
 router.get("/:id", getParticipante);
 
-router.post("/", postParticipante);
+router.get("/usuarios/:postId", getParticipantes);
 
-router.patch("/:id", patchParticipante);
+router.get("/:postId/:usuarioId/codigoqr", getCodigoQR);
+
+router.post("/", postParticipante);
 
 router.delete("/:id", deleteParticipante);
 
