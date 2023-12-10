@@ -29,7 +29,9 @@ export const getCodigoQR = async (req, res) => {
     // Buscar participante por ID
     const participante = await Participante.findOne({
       where: { post_id: postId, usuario_id: usuarioId },
+      attributes: ["codigo_QR"],
     });
+    console.log("Código QR del participante:", participante.codigo_QR);
     // Verificar si el participante existe y tiene un código QR
     if (!participante || !participante.codigo_QR) {
       return res.status(404).json({
@@ -56,12 +58,17 @@ export const getParticipantes = async (req, res) => {
     const participantes = await Participante.findAll({
       where: { post_id: postId },
       include: [
-        { model: Usuario, attributes: ["nombre", "nickname"], as: "usuario" },
+        {
+          model: Usuario,
+          attributes: ["id", "nombre", "nickname"],
+          as: "usuario",
+        },
       ],
     });
     // Mapear la respuesta para devolver solo la información necesaria
     const participantesConNombres = participantes.map((participante) => ({
       id: participante.id,
+      idUser: participante.usuario.id,
       nombre: participante.usuario.nombre,
       nickname: participante.usuario.nickname,
     }));
@@ -85,9 +92,9 @@ export const postParticipante = async (req, res) => {
       });
     }
     const participante = await Participante.create({
-      post_id: req.body.post_id,
-      usuario_id: req.body.usuario_id,
-      fecha_registro: req.body.fecha_registro,
+      post_id,
+      usuario_id,
+      fecha_registro,
     });
     res.status(201).json({
       message: "Registro creado correctamente",
@@ -100,7 +107,6 @@ export const postParticipante = async (req, res) => {
     });
   }
 };
-fetch;
 //Delete
 export const deleteParticipante = async (req, res) => {
   try {

@@ -3,6 +3,7 @@ import { db } from "../database/db.js";
 import bcrypt from "bcrypt";
 
 const Usuario = db.define("usuarios", {
+  id: { type: DataTypes.STRING, primaryKey: true, autoIncrement: true },
   nombre: { type: DataTypes.STRING },
   mail: { type: DataTypes.STRING },
   nickname: { type: DataTypes.STRING },
