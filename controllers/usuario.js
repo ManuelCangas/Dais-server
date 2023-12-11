@@ -99,21 +99,41 @@ export const logAdmin = async (req, res) => {
   const { nickname, password } = req.body;
   console.log(req.body);
   try {
-    console.log(`Intento de inicio de sesión de  : ${nickname}`);
+    console.log(`Intento de inicio de sesión de administrador: ${nickname}`);
     const usuario = await Usuario.findOne({
       where: {
         nickname: nickname,
         usuario_rol: 3,
       },
+      attributes: ["id", "nickname", "password"], //Solo devuelve los atributos
     });
     if (!usuario) {
-      return res.status(401).json({ message: "Credencial usuario invalida" });
+      return res
+        .status(401)
+        .json({ message: "Credencial de administrador invalida" });
     }
     const isValidatedPassword = await usuario.validarContraseña(password);
     if (!isValidatedPassword) {
-      return res.status(401).json({ message: "Credencial usuario invalida" });
+      return res
+        .status(401)
+        .json({ message: "Credencial de administrador invalida" });
     }
-    res.json({ message: "Inicio de sesión exitoso" });
+    const token = JWT.sign(
+      { userId: usuario.id },
+      "your-secret-key", // Clave secreta
+      {
+        expiresIn: "1h", // Expiración del token
+      }
+    );
+    res.json({
+      message: "Inicio de sesión exitoso",
+      token,
+      usuario: {
+        id: usuario.id,
+        nickname: usuario.nickname,
+      },
+    });
+    console.log("ID del usuario de tienda:", usuario.id, "El token es:", token);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error en el servidor" });
