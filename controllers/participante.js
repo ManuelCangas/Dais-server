@@ -1,3 +1,5 @@
+import { decode } from "jsqr";
+import jwt from "jsonwebtoken";
 import Participante from "../models/participante.js";
 import Usuario from "../models/usuario.js";
 
@@ -21,7 +23,7 @@ export const getParticipante = async (req, res) => {
     console.log({ error: error.message });
   }
 };
-// Nuevo método en el controlador
+//Obtener QR
 export const getCodigoQR = async (req, res) => {
   try {
     const { postId, usuarioId } = req.params;
@@ -65,7 +67,7 @@ export const getParticipantes = async (req, res) => {
         },
       ],
     });
-    // Mapear la respuesta para devolver solo la información necesaria
+    // Mapear la respuesta
     const participantesConNombres = participantes.map((participante) => ({
       id: participante.id,
       idUser: participante.usuario.id,
@@ -84,17 +86,16 @@ export const getParticipantes = async (req, res) => {
 //Post
 export const postParticipante = async (req, res) => {
   try {
-    const { post_id, usuario_id, fecha_registro } = req.body;
+    const { post_id, usuario_id } = req.body;
     // Validar que se reciben los datos necesarios
-    if (!post_id || !usuario_id || !fecha_registro) {
+    if (!post_id || !usuario_id) {
       return res.status(400).json({
-        error: "No hay post, usuario o fecha de participante",
+        error: "No hay post o usuario",
       });
     }
     const participante = await Participante.create({
       post_id,
       usuario_id,
-      fecha_registro,
     });
     res.status(201).json({
       message: "Registro creado correctamente",

@@ -4,6 +4,7 @@ import Usuario from "../models/usuario.js"; // Agrega esta línea
 
 export const authenticateToken = (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
+  console.log("Token recibido:", token);
   if (!token) {
     return res
       .status(401)
@@ -24,7 +25,7 @@ export const authenticateToken = (req, res, next) => {
         userId: usuario.id,
         // Otros campos del usuario si son necesarios
       };
-      console.log("UserID en authenticateToken:", req.user.userId);
+      console.log("Usuario autenticado:", req.user);
       next();
     } catch (error) {
       console.error("Error al obtener usuario desde la base de datos:", error);

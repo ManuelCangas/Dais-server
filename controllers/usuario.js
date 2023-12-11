@@ -52,7 +52,7 @@ export const getUsuarioActual = async (req, res) => {
   }
 };
 
-//Post Usuario Jugador & validar
+//Login Usuario Jugado
 export const logUsuario = async (req, res) => {
   const { nickname, password } = req.body;
   console.log(req.body);
@@ -94,7 +94,7 @@ export const logUsuario = async (req, res) => {
     res.status(500).json({ error: "Error en el servidor" });
   }
 };
-//Post Admin & validar
+//Login Admin
 export const logAdmin = async (req, res) => {
   const { nickname, password } = req.body;
   console.log(req.body);
@@ -120,7 +120,7 @@ export const logAdmin = async (req, res) => {
   }
 };
 
-//Post Usuario Tienda & Validar
+//Login Usuario Tienda
 export const logTienda = async (req, res) => {
   const { nickname, password } = req.body;
   console.log(req.body);
