@@ -36,9 +36,6 @@ Participante.belongsTo(Post, { foreignKey: "post_id" });
 Participante.belongsTo(Usuario, { foreignKey: "usuario_id" });
 
 Participante.beforeCreate(async (participante) => {
-  const formattedDate = moment(participante.fecha_participante).format(
-    "YYYY-MM-DD HH:mm:ss"
-  );
   const dataToEncode = `user: ${participante.usuario_id} -post: ${participante.post_id}`;
   try {
     const qrImage = await QRCode.toString(dataToEncode);

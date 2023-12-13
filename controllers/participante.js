@@ -1,5 +1,3 @@
-import { decode } from "jsqr";
-import jwt from "jsonwebtoken";
 import Participante from "../models/participante.js";
 import Usuario from "../models/usuario.js";
 
@@ -15,12 +13,21 @@ export const getAllParticipantes = async (req, res) => {
 //Get
 export const getParticipante = async (req, res) => {
   try {
-    const participante = await Participante.findAll({
-      where: { id: req.params.id },
+    const { postId } = req.params;
+    const usuarioId = req.user.userId;
+    const participante = await Participante.findOne({
+      where: { post_id: postId, usuario_id: usuarioId },
     });
-    res.json(participante);
+    if (participante) {
+      // Si el participante existe, envía la información del participante
+      res.json(participante);
+    } else {
+      // Si no existe, envía un mensaje indicando que no se encontró el participante
+      res.json({ message: "No se encontró el participante" });
+    }
   } catch (error) {
     console.log({ error: error.message });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 //Obtener QR
@@ -86,7 +93,8 @@ export const getParticipantes = async (req, res) => {
 //Post
 export const postParticipante = async (req, res) => {
   try {
-    const { post_id, usuario_id } = req.body;
+    const post_id = req.params.postId;
+    const usuario_id = req.user.userId;
     // Validar que se reciben los datos necesarios
     if (!post_id || !usuario_id) {
       return res.status(400).json({
@@ -94,11 +102,12 @@ export const postParticipante = async (req, res) => {
       });
     }
     const participante = await Participante.create({
-      post_id,
-      usuario_id,
+      post_id: post_id,
+      usuario_id: usuario_id,
     });
     res.status(201).json({
       message: "Registro creado correctamente",
+      participante: participante,
     });
     console.log(participante);
   } catch (error) {

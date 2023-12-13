@@ -10,12 +10,13 @@ export const handleQRScan = async (req, res) => {
     console.log("Usuario del token:", usuarioIdToken);
     const { usuario_id, post_id } = parseQRData(data);
     console.log("Datos después de parseQRData:", { usuario_id, post_id });
-    //if (usuarioIdToken !== usuario_id) {
-    //  return res.status(403).json({
-    //    message:
-    //      "El usuario del token no coincide con el usuario del código QR.",
-    //  });
-    //}
+    if (usuarioIdToken !== usuario_id) {
+      return res.status(200).json({
+        error: "Usuario no autorizado",
+        message:
+          "El usuario del token no coincide con el usuario del código QR.",
+      });
+    }
     const result = await Participante.updateAsistencia(usuario_id, post_id);
     console.log("Resultado de la actualización de la asistencia:", result);
     if (!result) {

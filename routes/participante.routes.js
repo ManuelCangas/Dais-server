@@ -14,15 +14,15 @@ const router = express.Router();
 
 router.get("/", getAllParticipantes);
 
-router.get("/:id", getParticipante);
+router.post("/:postId", authenticateToken, getParticipante);
 
 router.get("/usuarios/:postId", getParticipantes); //obtiene los participantes con el id del post
 
 router.get("/:postId/:usuarioId/codigoqr", getCodigoQR); //obtiene codigo QR
 
-router.post("/validarqr", authenticateToken, handleQRScan);
+router.post("/post/validarqr", authenticateToken, handleQRScan);
 
-router.post("/", postParticipante);
+router.post("/:postId/create", authenticateToken, postParticipante);
 
 router.delete("/:id", deleteParticipante);
 
