@@ -20,11 +20,11 @@ router.get("/:id", getUsuario);
 
 router.post("/", postUsuario);
 
-router.post("/login", logUsuario);
+router.post("/login-jugador", logUsuario);
 
-router.post("/logTienda", logTienda);
+router.post("/login-tienda", logTienda);
 
-router.post("/logAdmin", logAdmin);
+router.post("/login-admin", logAdmin);
 
 router.post("/perfil", authenticateToken, getUsuarioActual);
 
