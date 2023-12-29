@@ -2,7 +2,7 @@
 import JWT from "jsonwebtoken";
 import Usuario from "../models/usuario.js";
 
-export const authenticatePostToken = async (req, res, next) => {
+export const authenticateAdminToken = async (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
 
   if (!token) {
@@ -11,7 +11,7 @@ export const authenticatePostToken = async (req, res, next) => {
       .json({ message: "No se proporcionó un token de autenticación." });
   }
 
-  JWT.verify(token, "your-secret-key", async (err, decodedToken) => {
+  JWT.verify(token, "admin-secret-key", async (err, decodedToken) => {
     if (err) {
       return res.status(403).json({ message: "Token no válido." });
     }

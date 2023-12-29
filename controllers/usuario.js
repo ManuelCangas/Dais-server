@@ -97,7 +97,6 @@ export const logUsuario = async (req, res) => {
 //Login Admin
 export const logAdmin = async (req, res) => {
   const { nickname, password } = req.body;
-  console.log(req.body);
   try {
     console.log(`Intento de inicio de sesión de administrador: ${nickname}`);
     const usuario = await Usuario.findOne({
@@ -133,7 +132,7 @@ export const logAdmin = async (req, res) => {
         nickname: usuario.nickname,
       },
     });
-    console.log("ID del usuario de tienda:", usuario.id, "El token es:", token);
+    console.log("El token de usuario es:", token);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error en el servidor" });
@@ -143,7 +142,6 @@ export const logAdmin = async (req, res) => {
 //Login Usuario Tienda
 export const logTienda = async (req, res) => {
   const { nickname, password } = req.body;
-  console.log(req.body);
   try {
     console.log(`Intento de inicio de sesión de tienda: ${nickname}`);
     const usuario = await Usuario.findOne({

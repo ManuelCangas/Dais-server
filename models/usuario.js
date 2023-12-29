@@ -11,7 +11,7 @@ const Usuario = db.define("usuarios", {
   edad: { type: DataTypes.DATE },
   sexo: { type: DataTypes.STRING },
   usuario_rol: { type: DataTypes.INTEGER },
-  subscription: { type: DataTypes.TINYINT },
+  usuario_sub: { type: DataTypes.INTEGER, allowNull: true },
 });
 Usuario.beforeCreate(async (usuario, options) => {
   const hashedPassword = await bcrypt.hash(usuario.password, 10); // Aplica seguridad de Hash a la contraseña

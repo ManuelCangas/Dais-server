@@ -8,6 +8,7 @@ import tipoRoutes from "./routes/tipo.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import tagRoutes from "./routes/tag.routes.js";
 import participanteRoutes from "./routes/participante.routes.js";
+import subscriptionRoutes from "./routes/subscription.routes.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/tipo", tipoRoutes);
 app.use("/post", postRoutes);
 app.use("/tag", tagRoutes);
 app.use("/participante", participanteRoutes);
+app.use("/subscription", subscriptionRoutes);
 
 app.use("/imagenes", express.static("./Imagenes"));
 

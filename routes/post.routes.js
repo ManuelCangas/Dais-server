@@ -9,15 +9,18 @@ import {
 } from "../controllers/post.js";
 import { upload } from "../controllers/post.js";
 import { authenticateToken } from "../middleware/AuthPlayer.js";
+import * as reportController from "../controllers/reportController.js";
 const router = express.Router();
 
 router.get("/", getAllPost);
 
 router.get("/:id", getPost);
 
+router.get("/report/:userId", reportController.getReportInfo);
+
 router.post("/", upload.single("rutaImg"), postPost);
 
-router.post("/userposts", authenticateToken, getUserPosts);
+router.post("/tienda", authenticateToken, getUserPosts);
 
 router.patch("/:id", patchPost);
 

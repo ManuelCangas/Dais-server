@@ -30,8 +30,8 @@ export const getUserPosts = async (req, res) => {
     const userPosts = await Post.findAll({
       where: { usuario_id },
     });
-
     res.json(userPosts);
+    console.log(userPosts);
   } catch (error) {
     console.error("Error fetching user posts:", error.message);
     res.status(500).json({
@@ -86,18 +86,28 @@ const storage = multer.diskStorage({
 });
 //Guarda el archivo img definido previamente en el storage
 const upload = multer({ storage });
-
-//Patch //Usuario y Admin
+//Patch post
 export const patchPost = async (req, res) => {
   try {
-    await Post.update({
-      where: { id: req.params.id },
-    });
+    const { id } = req.params;
+    const { estado } = req.body; // Asumiendo que envías el estado en el cuerpo de la solicitud
+
+    await Post.update(
+      { estado },
+      {
+        where: { id },
+      }
+    );
+
     res.json({
       message: "Registro actualizado correctamente",
     });
   } catch (error) {
     console.log({ error: error.message });
+    res.status(500).json({
+      error: error.message,
+      message: "Hubo un error al intentar actualizar el registro",
+    });
   }
 };
 //Delete

@@ -10,7 +10,7 @@ import {
   logAdmin,
   getUsuarioActual,
 } from "../controllers/usuario.js";
-import { authenticateToken } from "../middleware/authPlayer.js";
+import { authenticateToken } from "../middleware/AuthPlayer.js";
 
 const router = express.Router();
 

@@ -1,5 +1,4 @@
 import { DataTypes } from "sequelize";
-import QRCode from "qrcode";
 import db from "../database/db.js";
 import moment from "moment";
 import Post from "./post.js";
@@ -28,8 +27,8 @@ const Participante = db.define("participantes", {
   },
   fecha_registro: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   fecha_participante: { type: DataTypes.DATE, allowNull: true },
-  asistencia: { type: DataTypes.TINYINT, defaultValue: 0 },
-  codigo_QR: { type: DataTypes.STRING },
+  asistencia: { type: DataTypes.TINYINT, allowNull: true },
+  codigo: { type: DataTypes.STRING },
 });
 
 Participante.belongsTo(Post, { foreignKey: "post_id" });
@@ -38,10 +37,9 @@ Participante.belongsTo(Usuario, { foreignKey: "usuario_id" });
 Participante.beforeCreate(async (participante) => {
   const dataToEncode = `user: ${participante.usuario_id} -post: ${participante.post_id}`;
   try {
-    const qrImage = await QRCode.toString(dataToEncode);
-    participante.codigo_QR = qrImage;
+    participante.codigo = dataToEncode;
   } catch (error) {
-    console.error("Error generating QR code: ", error);
+    console.error("Error generando información del código: ", error);
   }
 });
 
@@ -51,17 +49,20 @@ Participante.updateAsistencia = async (usuarioId, postId) => {
     const participante = await Participante.findOne({
       where: { usuario_id: usuarioId, post_id: postId },
     });
-
     if (!participante) {
       console.error("Participante no encontrado");
       return false;
     }
-
-    // Actualiza los campos
+    if (
+      participante.asistencia !== null ||
+      participante.fecha_participante !== null
+    ) {
+      console.error("Código ya escaneado anteriormente");
+      return false;
+    }
     participante.asistencia = 1;
     participante.fecha_participante = moment().format("YYYY-MM-DD HH:mm:ss");
 
-    // Guarda los cambios en la base de datos
     await participante.save();
 
     console.log(

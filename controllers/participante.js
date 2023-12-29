@@ -77,9 +77,9 @@ export const getParticipantes = async (req, res) => {
     // Mapear la respuesta
     const participantesConNombres = participantes.map((participante) => ({
       id: participante.id,
-      idUser: participante.usuario.id,
       nombre: participante.usuario.nombre,
       nickname: participante.usuario.nickname,
+      asistencia: participante.asistencia,
     }));
     res.json(participantesConNombres);
   } catch (error) {
